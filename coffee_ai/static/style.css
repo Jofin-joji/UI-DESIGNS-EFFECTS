@@ -1,0 +1,115 @@
+/* General Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background: url('/static/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Header */
+header {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.6); /* Slightly dark background for header */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+/* Main Content */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    margin: 0 auto;
+    width: 90%;
+    max-width: 1200px;
+    gap: 2rem;
+}
+
+/* Camera View */
+.camera-view {
+    text-align: center;
+    width: 100%;
+}
+
+video {
+    width: 100%;
+    max-width: 600px;
+    border: 3px solid rgba(255, 255, 255, 0.8); /* Semi-transparent border */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Controls */
+.controls button {
+    padding: 1rem 2rem;
+    margin: 0.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+#startBtn {
+    background: #4caf50;
+}
+
+#startBtn:hover {
+    background: #388e3c;
+    transform: scale(1.05);
+}
+
+#stopBtn {
+    background: #f44336;
+}
+
+#stopBtn:hover {
+    background: #d32f2f;
+    transform: scale(1.05);
+}
+
+/* Table Container */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    text-align: left;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    color: #fff;
+}
+
+th, td {
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+th {
+    background: rgba(255, 255, 255, 0.3);
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+tr:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}

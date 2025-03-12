@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Coffee Shop Monitoring</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <h1>☕ AI Coffee Shop Monitoring System</h1>
+    </header>
+
+    <section class="main-content">
+        <div class="camera-view">
+            <h2>📹 Live Camera Feed</h2>
+            <video id="cameraFeed" autoplay muted></video>
+        </div>
+
+        <div class="controls">
+            <button id="startBtn">▶ Start Monitoring</button>
+            <button id="stopBtn">⏹ Stop Monitoring</button>
+        </div>
+
+        <div class="table-container">
+            <h2>📊 Activity Log</h2>
+            <table id="logTable">
+                <thead>
+                    <tr>
+                        <th>Employee/Customer Name</th>
+                        <th>Status</th>
+                        <th>Entry Time</th>
+                        <th>Exit Time</th>
+                        <th>Total Coffee</th>
+                        <th>Last Active</th>
+                    </tr>
+                </thead>
+                <tbody id="logTableBody">
+                    <!-- Rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <script src="/static/script.js"></script>
+</body>
+</html>
