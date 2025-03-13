@@ -1,0 +1,202 @@
+/* Global Styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #f5f7fa, #d6eaf8);
+    color: #333;
+}
+
+/* Container */
+.container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 50px auto;
+    background-color: #ffffff;
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Header Section */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: #ffffff;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #f9f9f9;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+header h1:after {
+    content: '';
+    display: block;
+    width: 200px;
+    height: 4px;
+    background: #ffffff;
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+/* Controls Section */
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 15px;
+    border-top: 2px solid #ecf0f1;
+    border-bottom: 2px solid #ecf0f1;
+    padding: 15px 0;
+}
+
+label {
+    font-weight: bold;
+    color: #2c3e50;
+    margin-right: 10px;
+}
+
+select, button {
+    padding: 12px 18px;
+    font-size: 1rem;
+    border: 2px solid #dfe6e9;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #2c3e50;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+select:hover, button:hover {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+button {
+    background-color: #3498db;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #1f5fa7;
+}
+
+/* Period Buttons */
+.periods {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.period-btn {
+    width: 60px;
+    height: 60px;
+    background-color: #3498db;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.period-btn:hover {
+    background-color: #1f5fa7;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Attendance Table Section */
+#attendance-table {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+#attendance-table h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    text-align: center;
+    padding: 15px;
+    border: 1px solid #dfe6e9;
+}
+
+th {
+    background-color: #3498db;
+    color: #ffffff;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+td {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+}
+
+tr:hover td {
+    background-color: #d6eaf8;
+}
+
+/* Decorative Separators */
+.controls:before, .controls:after {
+    content: '';
+    display: block;
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(to right, #dfe6e9, #ffffff, #dfe6e9);
+    margin: 5px 0;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .periods {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .period-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 0.9rem;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+}

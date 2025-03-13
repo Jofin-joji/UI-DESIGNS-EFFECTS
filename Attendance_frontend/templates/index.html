@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Monitoring System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Attendance Monitoring System</h1>
+            <div id="clock" style="font-size: 1.2rem; color: #000; margin-top: 10px;"></div> <!-- Real-time clock -->
+        </header>
+
+        <div class="controls">
+            <label for="department">Department:</label>
+            <select id="department">
+                <option value="CSE">Computer Science</option>
+                <option value="ECE">Electronics</option>
+                <option value="MECH">Mechanical</option>
+                <option value="CIVIL">Civil</option>
+                <option value="EEE">Electrical</option>
+            </select>
+
+            <label for="year">Year:</label>
+            <select id="year">
+                <option value="1">1st Year</option>
+                <option value="2">2nd Year</option>
+                <option value="3">3rd Year</option>
+                <option value="4">4th Year</option>
+            </select>
+
+            <label for="class">Class:</label>
+            <select id="class">
+                <option value="A">Class A</option>
+                <option value="B">Class B</option>
+                <option value="C">Class C</option>
+            </select>
+
+            <button id="start-btn">Start</button>
+            <button id="stop-btn">Stop</button>
+        </div>
+
+        <div class="periods">
+            <button class="period-btn" onclick="loadData(1)">1</button>
+            <button class="period-btn" onclick="loadData(2)">2</button>
+            <button class="period-btn" onclick="loadData(3)">3</button>
+            <button class="period-btn" onclick="loadData(4)">4</button>
+            <button class="period-btn" onclick="loadData(5)">5</button>
+            <button class="period-btn" onclick="loadData(6)">6</button>
+            <button class="period-btn" onclick="loadData(7)">7</button>
+        </div>
+
+        <div id="attendance-table">
+            <h2>Attendance</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Name</th>
+                        <th>Register Number</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Real-Time Clock
+        function updateClock() {
+            const now = new Date();
+            const formattedTime = now.toLocaleTimeString();
+            document.getElementById('clock').textContent = `Time: ${formattedTime}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Load Attendance Data for Selected Period
+        function loadData(period) {
+            $.get(`/get_data/${period}`, function(data) {
+                const tableBody = document.getElementById('table-body');
+                tableBody.innerHTML = '';
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td>${row.No}</td><td>${row.Name}</td><td>${row["Register Number"]}</td>`;
+                    tableBody.appendChild(tr);
+                });
+            });
+        }
+
+        // Stop Button: Save Data to CSV
+        $('#stop-btn').on('click', function() {
+            $.post('/create_csv', {}, function(response) {
+                alert(response.message);
+            });
+        });
+    </script>
+</body>
+</html>
