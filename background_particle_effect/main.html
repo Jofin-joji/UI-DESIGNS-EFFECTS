@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Particle Network</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: #ebfaff; /* Backup background color */
+      }
+
+      #background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="background"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+      let scene, camera, renderer, stars, starGeo, lines, connectionPoints;
+      const mouse = new THREE.Vector2(); // Store mouse position as a vector
+      const mouseRepelStrength = 0.01; // Adjust repulsion strength
+      const slowFactor = 0.89; // Slow down particle movement
+      const starCount = 600; // Reduced number of particles for fewer nodes and lines
+
+      function init() {
+        // Create the scene and camera
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(
+          60,
+          window.innerWidth / window.innerHeight,
+          1,
+          1000
+        );
+        camera.position.z = 300;
+
+        // WebGL Renderer
+        renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById("background").appendChild(renderer.domElement);
+
+        // Set the renderer background color to white
+        renderer.setClearColor(0xebfaff); // White background for the animation
+
+        // Create star (node) particles
+        starGeo = new THREE.BufferGeometry();
+        const positions = new Float32Array(starCount * 3);
+        const velocities = new Float32Array(starCount * 3);
+
+        for (let i = 0; i < starCount; i++) {
+          const x = (Math.random() - 0.5) * 1000;
+          const y = (Math.random() - 0.5) * 1000;
+          const z = (Math.random() - 0.5) * 1000;
+
+          positions[i * 3] = x;
+          positions[i * 3 + 1] = y;
+          positions[i * 3 + 2] = z;
+
+          // Reduced initial velocity for slower movement
+          velocities[i * 3] = (Math.random() - 0.5) * 0.01;
+          velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.01;
+          velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.01;
+        }
+
+        starGeo.setAttribute(
+          "position",
+          new THREE.BufferAttribute(positions, 3)
+        );
+        starGeo.setAttribute(
+          "velocity",
+          new THREE.BufferAttribute(velocities, 3)
+        );
+
+        // Material for nodes (dark blue nodes)
+        const sprite = new THREE.TextureLoader().load(
+          "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/sprites/disc.png"
+        );
+        const starMaterial = new THREE.PointsMaterial({
+          color: 0x000025, // Dark blue node color
+          size: 4, // Larger nodes for visibility
+          map: sprite,
+          blending: THREE.AdditiveBlending,
+          depthTest: false,
+          transparent: false,
+        });
+
+        stars = new THREE.Points(starGeo, starMaterial);
+        scene.add(stars);
+
+        // Create lines connecting nodes (blurry light blue lines)
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0xadd8e6 }); // Light blue
+        lineMaterial.transparent = true;
+        lineMaterial.opacity = 1; // Make the lines blurry/transparent
+        lines = new THREE.LineSegments(
+          new THREE.BufferGeometry(),
+          lineMaterial
+        );
+        scene.add(lines);
+
+        // Create dark blue connection points at the ends of the lines
+        connectionPoints = new THREE.Points(
+          new THREE.BufferGeometry(),
+          new THREE.PointsMaterial({
+            color: 0x00008b, // Dark blue color for connection points
+            size: 2, // Smaller points to represent connection endpoints
+            map: sprite,
+            blending: THREE.AdditiveBlending,
+            depthTest: false,
+            transparent: true,
+          })
+        );
+        scene.add(connectionPoints);
+
+        // Handle window resizing
+        window.addEventListener("resize", onWindowResize, false);
+        window.addEventListener("mousemove", onMouseMove, false);
+
+        // Start animation loop
+        animate();
+      }
+
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      function onMouseMove(event) {
+        // Update mouse position
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      }
+
+      function animate() {
+        updateStars();
+        drawConnections();
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+      }
+
+      function updateStars() {
+        const positions = starGeo.attributes.position.array;
+        const velocities = starGeo.attributes.velocity.array;
+
+        for (let i = 0; i < starCount; i++) {
+          // Calculate distances between particles and mouse position
+          const dx = positions[i * 3] - mouse.x * 500;
+          const dy = positions[i * 3 + 1] - mouse.y * 500;
+
+          // Mouse repulsion effect
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 150) {
+            velocities[i * 3] += dx * mouseRepelStrength;
+            velocities[i * 3 + 1] += dy * mouseRepelStrength;
+          }
+
+          // Apply velocities to move particles
+          positions[i * 3] += velocities[i * 3];
+          positions[i * 3 + 1] += velocities[i * 3 + 1];
+          positions[i * 3 + 2] += velocities[i * 3 + 2];
+
+          // Slow down particle movement (damping)
+          velocities[i * 3] *= slowFactor;
+          velocities[i * 3 + 1] *= slowFactor;
+          velocities[i * 3 + 2] *= slowFactor;
+
+          // Basic boundary check for particles
+          if (positions[i * 3] > 500 || positions[i * 3] < -500) {
+            velocities[i * 3] *= -1;
+          }
+          if (positions[i * 3 + 1] > 500 || positions[i * 3 + 1] < -500) {
+            velocities[i * 3 + 1] *= -1;
+          }
+        }
+
+        starGeo.attributes.position.needsUpdate = true;
+      }
+
+      function drawConnections() {
+        const positions = starGeo.attributes.position.array;
+        const linePositions = [];
+        const pointPositions = [];
+
+        for (let i = 0; i < starCount; i++) {
+          for (let j = i + 1; j < starCount; j++) {
+            const dx = positions[i * 3] - positions[j * 3];
+            const dy = positions[i * 3 + 1] - positions[j * 3 + 1];
+            const dz = positions[i * 3 + 2] - positions[j * 3 + 2];
+            const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+            // Draw lines between nearby particles
+            if (dist < 150) {
+              linePositions.push(
+                positions[i * 3],
+                positions[i * 3 + 1],
+                positions[i * 3 + 2],
+                positions[j * 3],
+                positions[j * 3 + 1],
+                positions[j * 3 + 2]
+              );
+
+              // Add dark blue points at the start and end of the line
+              pointPositions.push(
+                positions[i * 3],
+                positions[i * 3 + 1],
+                positions[i * 3 + 2],
+                positions[j * 3],
+                positions[j * 3 + 1],
+                positions[j * 3 + 2]
+              );
+            }
+          }
+        }
+
+        // Update line geometry
+        const lineGeo = new THREE.BufferGeometry();
+        lineGeo.setAttribute(
+          "position",
+          new THREE.BufferAttribute(new Float32Array(linePositions), 3)
+        );
+        lines.geometry.dispose(); // Dispose old geometry
+        lines.geometry = lineGeo; // Assign new geometry for the lines
+
+        // Update connection point geometry
+        const pointGeo = new THREE.BufferGeometry();
+        pointGeo.setAttribute(
+          "position",
+          new THREE.BufferAttribute(new Float32Array(pointPositions), 3)
+        );
+        connectionPoints.geometry.dispose(); // Dispose old geometry
+        connectionPoints.geometry = pointGeo; // Assign new geometry for the points
+      }
+
+      init();
+    </script>
+  </body>
+</html>
