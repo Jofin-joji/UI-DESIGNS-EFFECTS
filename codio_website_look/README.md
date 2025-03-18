@@ -1,4 +1,4 @@
-# Interactive Particle Network
+# Interactive Particle Network inspired from codio website
 
 An interactive animated particle network inspired by the Codio website UI. This effect creates a dynamic visualization using Three.js, where particles move and connect with each other, forming an aesthetic web-like structure. The particles react to mouse movement, creating a smooth and engaging visual experience.
 
