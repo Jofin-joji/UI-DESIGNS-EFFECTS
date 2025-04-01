@@ -1,4 +1,4 @@
-/* Set the body and html to fill the screen */
+
 html,
 body {
   margin: 0;
@@ -9,7 +9,7 @@ body {
   background-color: #000;
 }
 
-/* Ensure the canvas takes up the entire window */
+
 canvas {
   display: block;
   position: fixed;
