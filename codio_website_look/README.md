@@ -91,10 +91,6 @@ If you'd like to contribute to this project:
 4. Push the branch (`git push origin feature-branch`).
 5. Open a Pull Request.
 
-## License
-
-This project is open-source and available under the MIT License.
-
 ## Author
 
 Created by [jofin joji](https://github.com/Jofin-joji). Feel free to connect!
