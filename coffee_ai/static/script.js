@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .join('');
     };
 
-    // Event listeners
+   
     startBtn.addEventListener('click', () => {
         alert("Monitoring started!");
     });
@@ -34,6 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
         alert("Monitoring stopped!");
     });
 
-    // Render the initial table
+
     renderTable();
 });
