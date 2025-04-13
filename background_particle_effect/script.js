@@ -13,7 +13,7 @@ window.addEventListener("resize", () => {
 
 let particlesArray;
 
-// Create a particle
+
 class Particle {
   constructor(x, y, directionX, directionY, size, color) {
     this.x = x;
